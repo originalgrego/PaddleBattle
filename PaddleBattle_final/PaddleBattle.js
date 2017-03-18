@@ -18,7 +18,6 @@ var PADDLE_HEIGHT = 40;
 // Some common math constants.
 var BOARD_HALF_WIDTH = BOARD_WIDTH_PIXELS / 2;
 var BOARD_HALF_HEIGHT = BOARD_HEIGHT_PIXELS / 2;
-var PADDLE_HALF_WIDTH = PADDLE_WIDTH / 2;
 var PADDLE_HALF_HEIGHT = PADDLE_HEIGHT / 2;
 
 // The x and y limits for the player paddles.
@@ -138,7 +137,6 @@ function oneDimensionalOverlap(oneStart, oneEnd, twoStart, twoEnd) {
   return contains(oneStart, oneEnd, twoStart) || contains(oneStart, oneEnd, twoEnd)
 }
 
-
 /**
  * Helper function to determine if a value is in between start and end.
  */
@@ -170,8 +168,15 @@ function drawCircle(color, x, y, radius) {
  * Update the position of the ball over time.
  */
 function step() {
-  // Increment the ball's position based on its current velocity. We do this in small steps (1/20th ball speed)
-  // to ensure a fast moving ball does not warp through the paddle.
+  // Increment the ball's position in the y dimension, and bounce it off the ceiling or floor.
+  // Out of bounds is 8 pixels outside of the board.
+  Ball.y += Ball.velocity.y;
+  if (Ball.y < 8 || Ball.y > BOARD_HEIGHT_PIXELS - 8) {
+    Ball.velocity.y = -Ball.velocity.y;
+  }
+
+  // Increment the ball's position in the y dimension based on its current velocity. We do this
+  // in small steps (1/20th ball speed) to ensure a fast moving ball does not warp through the paddle.
   var xIncrement = Ball.velocity.x / 20;
   for (var x = 0; x < 20; x++) {
     Ball.x += xIncrement;
@@ -204,13 +209,6 @@ function step() {
   else if (Ball.x < -30) {
     Player2.score++;
     resetBallPosition();
-  }
-
-  // Increment the ball's position in the y dimension, and bounce it off the ceiling or floor.
-  // Out of bounds is 8 pixels outside of the board.
-  Ball.y += Ball.velocity.y;
-  if (Ball.y < 8 || Ball.y > BOARD_HEIGHT_PIXELS - 8) {
-    Ball.velocity.y = -Ball.velocity.y;
   }
 }
 
@@ -252,7 +250,7 @@ function handleInput() {
 }
 
 /**
- * Draw our game board, two paddles, and ball.
+ * Draw our game board, two paddles, ball, and scores.
  */
 function drawGame() {
   // Game board.

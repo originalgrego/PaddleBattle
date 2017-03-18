@@ -6,7 +6,7 @@
 /**
  * These are our constant values.
  *
- * Constants are a necessity to good programming as they allow later changes to be made system wide as long as the constant is used
+ * Constants are a necessity to good programming as they allow later changes to be made system-wide as long as the constant is used
  * instead of "magic values/numbers" across the code.
  */
 // The size of our board and paddles in pixels.
@@ -18,7 +18,6 @@ var PADDLE_HEIGHT = 40;
 // Some common math constants.
 var BOARD_HALF_WIDTH = BOARD_WIDTH_PIXELS / 2;
 var BOARD_HALF_HEIGHT = BOARD_HEIGHT_PIXELS / 2;
-var PADDLE_HALF_WIDTH = PADDLE_WIDTH / 2;
 var PADDLE_HALF_HEIGHT = PADDLE_HEIGHT / 2;
 
 // The x and y limits for the player paddles.
@@ -133,30 +132,49 @@ function drawCircle(color, x, y, radius) {
   canvas.fill();
 }
 
+/**
+ * Helper function to see if an object has hit the bottom of the game board.
+ */
 function isOffBoardBottom(object) {
   return object.y > BOARD_HEIGHT_PIXELS - (object.height / 2);
 }
 
+/**
+ * Helper function to see if an object has hit the top of the game board.
+ */
 function isOffBoardTop(object) {
   return object.y < (object.height / 2);
 }
 
+/**
+ * Helper function to see if an object has reached the left side of the game board.
+ */
 function isOffBoardLeft(object) {
   return object.x < 0;
 }
 
+/**
+ * Helper function to see if an object has reached the right side of the game board.
+ */
 function isOffBoardRight(object) {
   return object.x > BOARD_WIDTH_PIXELS;
 }
 
+/**
+ * Helper function to see if an object has either hit the top or bottom of the game board.
+ */
 function isOffBoardY(object) {
   return isOffBoardBottom(object) || isOffBoardTop(object);
 }
 
+/**
+ * Helper function to see if an object has either reached the left or right side of the board.
+ * @param object
+ * @returns {*}
+ */
 function isOffBoardX(object) {
   return isOffBoardLeft(object) || isOffBoardRight(object);
 }
-
 
 /**
  * Sets up our game. Stores a reference to the canvas, sets up key listening, and starts our game loop.
